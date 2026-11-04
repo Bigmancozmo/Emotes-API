@@ -13,7 +13,7 @@
 	"description": "API for mods to add custom comment emojis",
 	"tags": [ "developer", "api" ],
 	"api": {
-		"headers": [
+		"include": [
 			"include/*.hpp"
 		]
 	}
