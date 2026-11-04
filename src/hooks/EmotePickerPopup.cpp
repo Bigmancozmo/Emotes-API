@@ -82,6 +82,9 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 					// weird crash workaround
 					auto textToInsert = ":" + emote->getNamespacedName() + ":";
 					for (char c : textToInsert) {
+						// NOTE: In the bindings you need to change insertAtCursor's return to void to make this work
+						// It'll compile if you don't, but it'll crash as soon as you click an emoji.
+						// Hopefully this changes in v6.0.0's full release
 						this->m_input->insertAtCursor(std::string(1, c));
 					}
 					});
