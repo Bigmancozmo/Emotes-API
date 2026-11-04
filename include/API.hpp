@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <cctype>
 #include <string>
+#include <vector>
 
 using namespace geode::prelude;
 
@@ -34,4 +35,21 @@ private:
 	int m_index;
 	std::string m_namespacedName;
 	EmoteDef* m_def;
+};
+
+using namespace geode::prelude;
+
+class CustomEmoteRegistry {
+public:
+	static CustomEmoteRegistry* create(std::string name);
+
+	void addEmote(CustomEmote* emote);
+	void finalize();
+
+private:
+	std::string m_name;
+	std::vector<CustomEmote*> uncommitted;
+	bool finalized;
+
+	bool registerEmote(CustomEmote* emote);
 };

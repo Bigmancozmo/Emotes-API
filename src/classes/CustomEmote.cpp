@@ -1,4 +1,4 @@
-#include "CustomEmote.hpp"
+#include <API.hpp>
 
 CustomEmote* CustomEmote::create(std::string name, std::string spriteName) {
 	auto me = new CustomEmote();

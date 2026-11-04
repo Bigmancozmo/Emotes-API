@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <vector>
 #include <string>
-#include "classes/CustomEmote.hpp"
+#include "../include/API.hpp"
 
 using namespace geode::prelude;
 

@@ -1,4 +1,4 @@
-#include "CustomEmoteRegistry.hpp"
+#include <API.hpp>
 #include "../Utils.hpp"
 #include <cctype>
 

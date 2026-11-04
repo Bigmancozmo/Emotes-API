@@ -10,5 +10,11 @@
 	"name": "Emotes API",
 	"version": "v1.0.0",
 	"developer": "Bigmancozmo",
-	"description": "API for mods to add custom comment emojis"
+	"description": "API for mods to add custom comment emojis",
+	"tags": [ "developer", "api" ],
+	"api": {
+		"headers": [
+			"include/*.hpp"
+		]
+	}
 }
