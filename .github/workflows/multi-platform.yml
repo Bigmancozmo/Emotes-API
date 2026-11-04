@@ -1,10 +1,12 @@
 name: Build Geode Mod
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - "**"
+# i disabled this for now cause u only have so many actions minutes
+# also it doesnt even compile rn cause i didnt put my bindings fork
+#on:
+#  workflow_dispatch:
+#  push:
+#    branches:
+#      - "**"
 
 jobs:
   build:
