@@ -1,5 +1,9 @@
-#pragma once;
+#pragma once
+
 #include <Geode/Geode.hpp>
+#include <cctype>
+#include <string>
+
 using namespace geode::prelude;
 
 class CustomEmote {
