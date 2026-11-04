@@ -1,8 +1,5 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EmotePickerPopup.hpp>
-#include <Geode/modify/CCTextInputNode.hpp>
-#include <Geode/modify/EmoteSprite.hpp>
-#include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/CCSpriteFrameCache.hpp>
 #include <vector>
 #include <cctype>
@@ -127,15 +124,6 @@ class $modify(CCSpriteFrameCache) {
 			}
 		}
 		return CCSpriteFrameCache::spriteFrameByName(name);
-	}
-};
-
-class $modify(EmoteSprite) {
-	static EmoteDef* defForName(std::string const& name) {
-		auto custom = Utils::findRegisteredEmote(name);
-		// we can't use m_namespacedName here because we dont have access to it
-		if (custom) return custom->getDef();
-		return EmoteSprite::defForName(name);
 	}
 };
 
