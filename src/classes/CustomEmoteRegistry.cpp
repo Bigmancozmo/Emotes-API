@@ -1,5 +1,5 @@
 #include "CustomEmoteRegistry.hpp"
-#include "../Util.hpp"
+#include "../Utils.hpp"
 #include <cctype>
 
 CustomEmoteRegistry* CustomEmoteRegistry::create(std::string name) {

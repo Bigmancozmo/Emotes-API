@@ -1,6 +1,4 @@
-#include "Util.hpp"
-#include "Util.hpp"
-#include "Util.hpp"
+#include "Utils.hpp"
 
 CustomEmote* Utils::findRegisteredEmote(std::string name) {
 	auto it = std::find_if(Shared::registeredEmotes.begin(), Shared::registeredEmotes.end(), [&] (auto const& entry) { return entry.first == name; });

@@ -1,6 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EmoteSprite.hpp>
-#include "../Util.hpp"
+#include "../Utils.hpp"
 
 using namespace geode::prelude;
 
