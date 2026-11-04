@@ -8,21 +8,10 @@
 #include <cctype>
 #include <Geode/utils/general.hpp>
 
+#include "Util.hpp"
 #include "classes/CustomEmote.hpp"
 
 using namespace geode::prelude;
-
-std::vector<std::pair<std::string, CustomEmote*>> registeredEmotes;
-std::vector<CustomEmote*> registeredEmoteIDs;
-std::vector<std::pair<std::string, std::vector<CustomEmote*>>> displayGroups;
-bool anyEmotesFailed = false;
-
-CustomEmote* findRegisteredEmote(std::string name) {
-	auto it = std::find_if(registeredEmotes.begin(), registeredEmotes.end(), [&] (auto const& entry) { return entry.first == name; });
-	if (it != registeredEmotes.end())
-		return it->second;
-	return nullptr;
-}
 
 class CustomEmoteRegistry {
 public:
@@ -66,9 +55,9 @@ private:
 		auto name = m_name + "_" + emote->m_name;
 
 		if (name.size() > 16) {
-			if (!anyEmotesFailed)
+			if (!Shared::anyEmotesFailed)
 				Notification::create(std::string("Some emotes were not added. More info is in the console."), NotificationIcon::Error, 4.0f)->show();
-			anyEmotesFailed = true;
+			Shared::anyEmotesFailed = true;
 
 			bool namespaceTooLong = m_name.size() > 5;
 			bool nameTooLong = emote->m_name.size() > 10;
@@ -81,7 +70,7 @@ private:
 			return false;
 		}
 
-		auto existing = findRegisteredEmote(name);
+		auto existing = Utils::findRegisteredEmote(name);
 
 		if (existing) {
 			Notification::create(std::string("Duplicated emote '" + name + "'"), NotificationIcon::Warning)->show();
@@ -89,19 +78,19 @@ private:
 		} else {
 			// put the emote in all 3 registries
 			// why are there 3? i dont know it just happened to be that way
-			emote->m_index = registeredEmoteIDs.size();
+			emote->m_index = Shared::registeredEmoteIDs.size();
 			emote->m_namespacedName = name;
 
-			registeredEmotes.emplace_back(name, emote);
-			registeredEmoteIDs.push_back(emote);
+			Shared::registeredEmotes.emplace_back(name, emote);
+			Shared::registeredEmoteIDs.push_back(emote);
 
-			auto group = std::find_if(displayGroups.begin(), displayGroups.end(), [&] (auto const& entry) {
+			auto group = std::find_if(Shared::displayGroups.begin(), Shared::displayGroups.end(), [&] (auto const& entry) {
 				return entry.first == m_name;
 			});
 
-			if (group == displayGroups.end()) {
-				displayGroups.emplace_back(m_name, std::vector<CustomEmote*>{});
-				group = std::prev(displayGroups.end());
+			if (group == Shared::displayGroups.end()) {
+				Shared::displayGroups.emplace_back(m_name, std::vector<CustomEmote*>{});
+				group = std::prev(Shared::displayGroups.end());
 			}
 
 			group->second.push_back(emote);
@@ -110,43 +99,6 @@ private:
 		return true;
 	}
 };
-
-CCNode* getLowestChildNode(CCNode* parent, bool ignoreAdditionalBtns = true) {
-	auto children = parent->getChildren();
-	if (children == nullptr) return nullptr;
-
-	float lowestY = 0;
-	CCNode* lowestYNode = nullptr;
-	for (int i = 0; i < children->count(); i++) {
-		auto child = static_cast<CCNode*>(children->objectAtIndex(i));
-		if (!child || (child->getTag() == 0xEA121 && ignoreAdditionalBtns)) continue;
-		if (child->getPositionY() < lowestY) {
-			lowestYNode = child;
-			lowestY = child->getPositionY();
-		}
-	}
-	
-	return lowestYNode;
-}
-
-CCNode* getLeftestChildNode(CCNode* parent, bool ignoreAdditionalBtns = true) {
-	auto children = parent->getChildren();
-	if (children == nullptr) return nullptr;
-
-	float leftestX = 9999999;
-	CCNode* leftestXNode = nullptr;
-	for (int i = 0; i < children->count(); i++) {
-		auto child = static_cast<CCNode*>(children->objectAtIndex(i));
-		if (!child || (child->getTag() == 0xEA121 && ignoreAdditionalBtns)) continue;
-		float xPos = child->getPositionX();
-		if (xPos < leftestX && xPos > 0.0f) { // the X is at 0.0f so we kinda just ignore it
-			leftestXNode = child;
-			leftestX = child->getPositionX();
-		}
-	}
-
-	return leftestXNode;
-}
 
 // weird implementation cause createWithDef wouldn't call but it works so who cares
 class $modify(CCSpriteFrameCache) {
@@ -163,8 +115,8 @@ class $modify(CCSpriteFrameCache) {
 						auto value = num.unwrap();
 						if (value <= -5000) {
 							auto customEmoteId = -5000 - value;
-							if (customEmoteId >= 0 && customEmoteId < registeredEmoteIDs.size()) {
-								auto customEmote = registeredEmoteIDs[customEmoteId];
+							if (customEmoteId >= 0 && customEmoteId < Shared::registeredEmoteIDs.size()) {
+								auto customEmote = Shared::registeredEmoteIDs[customEmoteId];
 								if (customEmote) {
 									return CCSpriteFrameCache::spriteFrameByName(customEmote->m_texture.c_str());
 								}
@@ -180,7 +132,7 @@ class $modify(CCSpriteFrameCache) {
 
 class $modify(EmoteSprite) {
 	static EmoteDef* defForName(std::string const& name) {
-		auto custom = findRegisteredEmote(name);
+		auto custom = Utils::findRegisteredEmote(name);
 		// we can't use m_namespacedName here because we dont have access to it
 		if (custom) return custom->getDef();
 		return EmoteSprite::defForName(name);
@@ -188,13 +140,12 @@ class $modify(EmoteSprite) {
 };
 
 std::unordered_map<CCNode*, int> emoteButtonGroups;
-
 class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 	void layoutAdditionalEmotes() {
 		float cellSize = 26.0f;
 
-		CCNode* lowestNode = getLowestChildNode(this->m_scrollContentMenu);
-		CCNode* leftestNode = getLeftestChildNode(this->m_scrollContentMenu);
+		CCNode* lowestNode = Utils::getLowestChildNode(this->m_scrollContentMenu);
+		CCNode* leftestNode = Utils::getLeftestChildNode(this->m_scrollContentMenu);
 		if (lowestNode == nullptr) return;
 		if (leftestNode == nullptr) return;
 
@@ -230,7 +181,7 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 		}
 
 		// find the new lowest one and set the content height (including the custom buttons)
-		CCNode* newLowest = getLowestChildNode(this->m_scrollContentMenu, false);
+		CCNode* newLowest = Utils::getLowestChildNode(this->m_scrollContentMenu, false);
 		if (newLowest == nullptr) return;
 		this->m_scrollContentLayer->setContentHeight(5.0f - newLowest->getPositionY() + (cellSize / 2.0f));
 	}
@@ -256,7 +207,7 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 		float cellSize = 26.0f * 0.75f;
 
 		int groupIdx = 0;
-		for (auto const& [name, emotes] : displayGroups) {
+		for (auto const& [name, emotes] : Shared::displayGroups) {
 			groupIdx++;
 			for (auto emote : emotes) {
 				log::info("namespace: {}, emote: {}", name, emote->m_name);
@@ -268,7 +219,7 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 				auto btn = CCMenuItemExt::createSpriteExtra(spr, [this, emote] (CCMenuItemSpriteExtra*) {
 					this->m_input->insertAtCursor(":" + emote->getNamespacedName() + ":");
 				});
-				auto lowest = getLowestChildNode(m_scrollContentMenu);
+				auto lowest = Utils::getLowestChildNode(m_scrollContentMenu);
 				btn->setTag(0xEA121); // some random slop number that probably wont overlap with another mod
 				emoteButtonGroups[btn] = groupIdx;
 				this->m_scrollContentMenu->addChild(btn);
