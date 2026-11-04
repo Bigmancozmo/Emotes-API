@@ -1,0 +1,21 @@
+{
+	"geode": "6.0.0-alpha.1",
+	"gd": {
+		"win": "2.2091",
+		"android": "2.2091",
+		"mac": "2.2091",
+		"ios": "2.2091"
+	},
+	"id": "bigmancozmo.emotes-api",
+	"name": "Emotes API",
+	"version": "v1.0.0",
+	"developer": "Bigmancozmo",
+	"description": "API for mods to add custom comment emojis",
+	"resources": {
+		"spritesheets": {
+			"EmoteSheet": [
+				"res/*.png"
+			]
+		}
+	}
+}
