@@ -7,7 +7,17 @@
 
 using namespace geode::prelude;
 
-class CustomEmote {
+#ifdef GEODE_IS_WINDOWS
+	#ifdef EMOTES_API_EXPORTING
+		#define EMOTES_API_DLL __declspec(dllexport)
+	#else
+		#define EMOTES_API_DLL __declspec(dllimport)
+	#endif
+#else
+	#define EMOTES_API_DLL __attribute__((visibility("default")))
+#endif
+
+class EMOTES_API_DLL CustomEmote {
 public:
 	static CustomEmote* create(std::string name, std::string spriteName);
 
@@ -37,9 +47,7 @@ private:
 	EmoteDef* m_def;
 };
 
-using namespace geode::prelude;
-
-class CustomEmoteRegistry {
+class EMOTES_API_DLL CustomEmoteRegistry {
 public:
 	static CustomEmoteRegistry* create(std::string name);
 
