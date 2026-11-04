@@ -10,12 +10,5 @@
 	"name": "Emotes API",
 	"version": "v1.0.0",
 	"developer": "Bigmancozmo",
-	"description": "API for mods to add custom comment emojis",
-	"resources": {
-		"spritesheets": {
-			"EmoteSheet": [
-				"res/*.png"
-			]
-		}
-	}
+	"description": "API for mods to add custom comment emojis"
 }
