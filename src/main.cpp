@@ -217,7 +217,11 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 					cellSize / spr->getContentSize().height
 				));
 				auto btn = CCMenuItemExt::createSpriteExtra(spr, [this, emote] (CCMenuItemSpriteExtra*) {
-					this->m_input->insertAtCursor(":" + emote->getNamespacedName() + ":");
+					// weird crash workaround
+					auto textToInsert = ":" + emote->getNamespacedName() + ":";
+					for (char c : textToInsert) {
+						this->m_input->insertAtCursor(std::string(1, c));
+					}
 				});
 				auto lowest = Utils::getLowestChildNode(m_scrollContentMenu);
 				btn->setTag(0xEA121); // some random slop number that probably wont overlap with another mod
