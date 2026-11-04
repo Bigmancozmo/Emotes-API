@@ -54,14 +54,12 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 	void layoutEmoteGrid() {
 		EmotePickerPopup::layoutEmoteGrid();
 		if (this->m_scrollContentMenu == nullptr) return;
-		log::info("Layout");
 		layoutAdditionalEmotes();
 	}
 
 	void onWindowResized() {
 		EmotePickerPopup::onWindowResized();
 		if (this->m_scrollContentMenu == nullptr) return;
-		log::info("Resized");
 		layoutAdditionalEmotes();
 	}
 
@@ -75,7 +73,6 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 		for (auto const& [name, emotes] : Shared::displayGroups) {
 			groupIdx++;
 			for (auto emote : emotes) {
-				log::info("namespace: {}, emote: {}", name, emote->m_name);
 				auto spr = CCSprite::createWithSpriteFrameName(emote->m_texture.c_str());
 				spr->setScale(std::min(
 					cellSize / spr->getContentSize().width,
