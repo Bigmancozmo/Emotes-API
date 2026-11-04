@@ -8,7 +8,7 @@
 #include <cctype>
 #include <Geode/utils/general.hpp>
 
-#include "CustomEmote.hpp"
+#include "classes/CustomEmote.hpp"
 
 using namespace geode::prelude;
 
