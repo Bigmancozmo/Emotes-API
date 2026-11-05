@@ -1,6 +1,5 @@
 # Emotes API
 A Geode mod that adds an API for RobTop's comment emojis introduced in 2.209.<br/>
-**if you're trying to compile it then unless [my pr](https://github.com/geode-sdk/bindings/pull/1476) has been merged you'll need [my bindings fork](https://github.com/Bigmancozmo/bindings)**<br/>
 ## Example usage
 Because of how RobTop implemented his parser, emoji names **cannot** be longer than 16 characters. The mod uses "registries" to group emojis, in an effort to prevent conflicts. The mod will not *crash* upon a conflict, but some emojis will be unavailable (emojis added first are prioritized and not replaced).<br/>
 Internally, emojis get named `{namespace}_{name}`. To prevent reaching the 16 character limit, namespaces must be **5 characters or shorter**, and emoji names must be **10 characters or shorter**.<br/>
