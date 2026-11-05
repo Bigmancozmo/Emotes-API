@@ -23,3 +23,4 @@ registry2->addEmote(CustomEmote::create("robtop", "games.png"_spr));
 registry2->addEmote(CustomEmote::create("geometry", "dash.png"_spr));
 registry2->finalize();
 ```
+**Further documentation is on the [README](https://github.com/Bigmancozmo/Emotes-API/blob/master/README.md)**
