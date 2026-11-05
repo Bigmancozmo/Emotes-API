@@ -22,7 +22,7 @@ registry2->addEmote(CustomEmote::create("robtop", "games.png"_spr));
 registry2->addEmote(CustomEmote::create("geometry", "dash.png"_spr)->setScale(2.0f)->setXOffset(1.0f));
 
 registry2->finalize();
-```cpp
+```
 Emote images **must** be in a spritesheet for technical reasons.<br/>
 If you're lazy (like me), there's a `QUICK_EMOTE` macro. It assumes the .png and emote have the same name. Usage example:
 ```cpp
