@@ -17,6 +17,8 @@ using namespace geode::prelude;
 	#define EMOTES_API_DLL __attribute__((visibility("default")))
 #endif
 
+#define QUICK_EMOTE(registry, name) registry->addEmote(CustomEmote::create(#name, #name ".png"_spr));
+
 class EMOTES_API_DLL CustomEmote {
 public:
 	static CustomEmote* create(std::string name, std::string spriteName);
