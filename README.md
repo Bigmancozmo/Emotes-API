@@ -38,6 +38,5 @@ The above example would expand to:
 auto registry = CustomEmoteRegistry::create("mymod");
 // Note that the .png and emote name are the same.
 registry->addEmote(CustomEmote::create("smiley", "smiley.png"_spr));
-QUICK_EMOTE(registry, smiley);
 registry->finalize();
 ```
