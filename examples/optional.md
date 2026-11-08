@@ -1,36 +1,22 @@
-## Usage as a required dependency
+## Usage as an optional dependency
+The mod can be used as an optional dependency through Geode's event system.<br/>
+Please do note that the **event API may not be as complete as the regular API.**
 ```cpp
-// You can have uppercase letters in your registry/emote names, but internally they're converted to lowercase
-auto registry = CustomEmoteRegistry::create("mod1"); // Cannot be longer than 5 characters.
-registry->addEmote(CustomEmote::create("smiley", "smiley.png"_spr));
-registry->addEmote(CustomEmote::create("frown", "frown.png"_spr));
-registry->addEmote(CustomEmote::create("1", "one.png"_spr));
-registry->addEmote(CustomEmote::create("2", "two.png"_spr));
-registry->addEmote(CustomEmote::create("3", "three.png"_spr));
-registry->finalize(); // You must finalize it! After finalizing, you cannot add more emotes.
+// Make sure you have this at the top
+#include <bigmancozmo.emotes-api/Events.hpp>
 
-// One mod can have multiple registries! Each registry is displayed as its own "group" in the emoji picker.
-// For example, one mod could add a registry for symbols and another for faces, and they would show separated.
-auto registry2 = CustomEmoteRegistry::create("mod2");
-registry2->addEmote(CustomEmote::create("robtop", "games.png"_spr));
+// Create a registry called "event"
+CreateRegistry().send("event");
 
-// You can modify the emote! These functions are chainable.
-registry2->addEmote(CustomEmote::create("geometry", "dash.png"_spr)->setScale(2.0f)->setXOffset(1.0f));
+// Just like in the regular API, the images must be part of a spritesheet in your mod
+// The AddEmote event takes 3 paremeters: registry name, emote name, sprite name
+// It is subject to the same restrictions as the regular API.
+AddEmote().send("event", "e1", "e.png"_spr);
+AddEmote().send("event", "v", "v.png"_spr);
+AddEmote().send("event", "e2", "e.png"_spr);
+AddEmote().send("event", "n", "n.png"_spr);
+AddEmote().send("event", "t", "t.png"_spr);
 
-registry2->finalize();
-```
-If you're lazy (like me), there's a `QUICK_EMOTE` macro. It assumes the .png and emote have the same name. Usage example:
-```cpp
-auto registry = CustomEmoteRegistry::create("mymod");
-
-// You must pass the registry and the image/emote name *WITHOUT* quotes
-QUICK_EMOTE(registry, smiley);
-registry->finalize();
-```
-The above example would expand to:
-```
-auto registry = CustomEmoteRegistry::create("mymod");
-// Note that the .png and emote name are the same.
-registry->addEmote(CustomEmote::create("smiley", "smiley.png"_spr));
-registry->finalize();
+// Finalize the registry
+FinalizeRegistry().send("event");
 ```

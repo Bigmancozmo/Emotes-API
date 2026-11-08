@@ -1,6 +1,8 @@
-## Usage as an optional dependency (TODO)
-The mod can be used as an optional dependency through Geode's event system.
+## Usage as a required dependency
 ```cpp
+// Make sure you have this at the top
+#include <bigmancozmo.emotes-api/API.hpp>
+
 // You can have uppercase letters in your registry/emote names, but internally they're converted to lowercase
 auto registry = CustomEmoteRegistry::create("mod1"); // Cannot be longer than 5 characters.
 registry->addEmote(CustomEmote::create("smiley", "smiley.png"_spr));

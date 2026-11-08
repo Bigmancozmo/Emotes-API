@@ -39,14 +39,26 @@ $on_mod(Loaded) {
 	finalizeRegistryListener.leak();
 
 	auto addEmoteListener = AddEmote().listen(
-		[&eventRegistries, &eventEmotes] (std::string registry, std::string name, std::string texture) {
-			auto it1 = eventRegistries.find(name);
+		[&eventRegistries, &eventEmotes] (std::string registryName, std::string name, std::string texture) {
+			auto it1 = eventRegistries.find(registryName);
 
 			if (it1 != eventRegistries.end()) {
+				// Registry exists
 				auto registry = it1->second;
 
+				auto it2 = eventEmotes.find(registryName + name);
+				if (it2 != eventEmotes.end()) {
+					// Emote exists in registry
+					log::error("[Event System] Emote '{}' already exists in registry '{}'", name, registryName);
+				} else {
+					// Emote doesn't exist - add
+					auto emote = CustomEmote::create(name, texture);
+					registry->addEmote(emote);
+					eventEmotes[registryName + name] = emote;
+				}
 			} else {
-				log::error("[Event System] Tried to finalize emote '{}' nonexistent registry '{}'", name, registry);
+				// Registry doesn't exist - error
+				log::error("[Event System] Tried to add emote '{}' to nonexistent registry '{}'", name, registryName);
 			}
 
 			return ListenerResult::Propagate;
@@ -57,6 +69,9 @@ $on_mod(Loaded) {
 	// Test code
 	CreateRegistry().send("event");
 	AddEmote().send("event", "e1", "e.png"_spr);
+	AddEmote().send("event", "v", "v.png"_spr);
+	AddEmote().send("event", "e2", "e.png"_spr);
+	AddEmote().send("event", "n", "n.png"_spr);
+	AddEmote().send("event", "t", "t.png"_spr);
 	FinalizeRegistry().send("event");
-	FinalizeRegistry().send("gfdvs"); // logs an error
 }
