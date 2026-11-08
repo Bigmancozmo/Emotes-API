@@ -94,9 +94,11 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 				auto lowest = Utils::getLowestChildNode(m_scrollContentMenu);
 				btn->setTag(0xEA121); // some random slop number that probably wont overlap with another mod
 
-				// set the offsets now that the button has been made
-				spr->setPositionX(emote->m_xOffset);
-				spr->setPositionY(emote->m_yOffset);
+				// set the x/y offset now that the button has been made
+				auto size = btn->getContentSize();
+				spr->setPosition({
+					size.width / 2 + emote->m_xOffset,
+					size.height / 2 + emote->m_yOffset });
 
 				emoteButtonGroups[btn] = groupIdx;
 				this->m_scrollContentMenu->addChild(btn);
