@@ -19,5 +19,12 @@
 	},
 	"links": {
 		"source": "https://github.com/Bigmancozmo/Emotes-API"
+	},
+	"resources": {
+		"spritesheets": {
+			"EmoteSheet": [
+				"res/*.png"
+			]
+		}
 	}
 }
