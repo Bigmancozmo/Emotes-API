@@ -13,6 +13,10 @@ $on_mod(Loaded) {
 	std::unordered_map<std::string, CustomEmoteRegistry*> eventRegistries;
 	std::unordered_map<std::string, CustomEmote*> eventEmotes;
 
+	//////////////////////////////////////////////////
+	//////////////////// REGISTRY ////////////////////
+	//////////////////////////////////////////////////
+
 	auto createRegistryListener = CreateRegistry().listen(
 		[&eventRegistries] (std::string name) {
 			auto registry = CustomEmoteRegistry::create(name);
@@ -20,7 +24,6 @@ $on_mod(Loaded) {
 			return ListenerResult::Propagate;
 		}
 	);
-	createRegistryListener.leak();
 
 	auto finalizeRegistryListener = FinalizeRegistry().listen(
 		[&eventRegistries] (std::string name) {
@@ -36,7 +39,11 @@ $on_mod(Loaded) {
 			return ListenerResult::Propagate;
 		}
 	);
-	finalizeRegistryListener.leak();
+
+
+	//////////////////////////////////////////////////
+	///////////////////// EMOTE //////////////////////
+	//////////////////////////////////////////////////
 
 	auto addEmoteListener = AddEmote().listen(
 		[&eventRegistries, &eventEmotes] (std::string registryName, std::string name, std::string texture) {
@@ -64,7 +71,50 @@ $on_mod(Loaded) {
 			return ListenerResult::Propagate;
 		}
 	);
+
+
+	//////////////////////////////////////////////////
+	///////////////////// CONFIG /////////////////////
+	//////////////////////////////////////////////////
+
+	auto configureEmoteScaleListener = ConfigureEmote_SetScale().listen(
+		[&eventEmotes] (std::string registryName, std::string emoteName, float scale) {
+			auto it = eventEmotes.find(registryName + emoteName);
+
+			if (it != eventEmotes.end()) {
+				auto emote = it->second;
+				emote->setScale(scale);
+			} else {
+				log::error("[Event System] Tried to configure scale of nonexistent emote '{}' in registry '{}'", emoteName, registryName);
+			}
+
+			return ListenerResult::Propagate;
+		}
+	);
+
+	auto configureEmoteColorListener = ConfigureEmote_SetColor().listen(
+		[&eventEmotes] (std::string registryName, std::string emoteName, ccColor3B color) {
+			auto it = eventEmotes.find(registryName + emoteName);
+
+			if (it != eventEmotes.end()) {
+				auto emote = it->second;
+				emote->setColor(color);
+			} else {
+				log::error("[Event System] Tried to configure color of nonexistent emote '{}' in registry '{}'", emoteName, registryName);
+			}
+
+			return ListenerResult::Propagate;
+		}
+	);
+
+	// leak all of them
+	createRegistryListener.leak();
+	finalizeRegistryListener.leak();
+
 	addEmoteListener.leak();
+
+	configureEmoteScaleListener.leak();
+	configureEmoteColorListener.leak();
 
 	// Test code
 	CreateRegistry().send("event");
@@ -73,5 +123,7 @@ $on_mod(Loaded) {
 	AddEmote().send("event", "e2", "e.png"_spr);
 	AddEmote().send("event", "n", "n.png"_spr);
 	AddEmote().send("event", "t", "t.png"_spr);
+	ConfigureEmote_SetScale().send("event", "e1", 2.0f);
+	ConfigureEmote_SetColor().send("event", "e1", ccBLUE);
 	FinalizeRegistry().send("event");
 }

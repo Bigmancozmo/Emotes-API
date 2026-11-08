@@ -17,6 +17,12 @@ AddEmote().send("event", "e2", "e.png"_spr);
 AddEmote().send("event", "n", "n.png"_spr);
 AddEmote().send("event", "t", "t.png"_spr);
 
+// There are multiple ConfigureEmote events!
+// This is an example of two, but here are all the ones you can use (you must prefix them with ConfigureEmote_):
+// SetScale, SetXOffset, SetYOffset, SetFlipX, SetColor
+ConfigureEmote_SetScale().send("event", "e1", 2.0f);
+ConfigureEmote_SetColor().send("event", "e1", ccBLUE);
+
 // Finalize the registry
 FinalizeRegistry().send("event");
 ```
