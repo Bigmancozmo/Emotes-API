@@ -10,23 +10,31 @@
 using namespace geode::prelude;
 
 $on_mod(Loaded) {
-	std::unordered_map<std::string, CustomEmoteRegistry*> eventRegistries;
-	std::unordered_map<std::string, CustomEmote*> eventEmotes;
+	static std::unordered_map<std::string, CustomEmoteRegistry*> eventRegistries;
+	static std::unordered_map<std::string, CustomEmote*> eventEmotes;
 
 	//////////////////////////////////////////////////
 	//////////////////// REGISTRY ////////////////////
 	//////////////////////////////////////////////////
 
 	auto createRegistryListener = CreateRegistry().listen(
-		[&eventRegistries] (std::string name) {
-			auto registry = CustomEmoteRegistry::create(name);
-			eventRegistries[name] = registry;
+		[] (std::string name) {
+			auto it1 = eventRegistries.find(name);
+
+			if (it1 != eventRegistries.end()) {
+				// Registry exists - error
+				log::error("[Event System] Registry '{}' already exists", name);
+			} else {
+				// Registry doesn't exist - create
+				auto registry = CustomEmoteRegistry::create(name);
+				eventRegistries[name] = registry;
+			}
 			return ListenerResult::Propagate;
 		}
 	);
 
 	auto finalizeRegistryListener = FinalizeRegistry().listen(
-		[&eventRegistries] (std::string name) {
+		[] (std::string name) {
 			auto it = eventRegistries.find(name);
 
 			if (it != eventRegistries.end()) {
@@ -46,14 +54,14 @@ $on_mod(Loaded) {
 	//////////////////////////////////////////////////
 
 	auto addEmoteListener = AddEmote().listen(
-		[&eventRegistries, &eventEmotes] (std::string registryName, std::string name, std::string texture) {
+		[] (std::string registryName, std::string name, std::string texture) {
 			auto it1 = eventRegistries.find(registryName);
 
 			if (it1 != eventRegistries.end()) {
 				// Registry exists
 				auto registry = it1->second;
 
-				auto it2 = eventEmotes.find(registryName + name);
+				auto it2 = eventEmotes.find(registryName + "_" + name);
 				if (it2 != eventEmotes.end()) {
 					// Emote exists in registry
 					log::error("[Event System] Emote '{}' already exists in registry '{}'", name, registryName);
@@ -61,7 +69,7 @@ $on_mod(Loaded) {
 					// Emote doesn't exist - add
 					auto emote = CustomEmote::create(name, texture);
 					registry->addEmote(emote);
-					eventEmotes[registryName + name] = emote;
+					eventEmotes[registryName + "_" + name] = emote;
 				}
 			} else {
 				// Registry doesn't exist - error
@@ -78,8 +86,8 @@ $on_mod(Loaded) {
 	//////////////////////////////////////////////////
 
 	auto configureEmoteScaleListener = ConfigureEmote_SetScale().listen(
-		[&eventEmotes] (std::string registryName, std::string emoteName, float scale) {
-			auto it = eventEmotes.find(registryName + emoteName);
+		[] (std::string registryName, std::string emoteName, float scale) {
+			auto it = eventEmotes.find(registryName + "_" + emoteName);
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -93,8 +101,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteColorListener = ConfigureEmote_SetColor().listen(
-		[&eventEmotes] (std::string registryName, std::string emoteName, ccColor3B color) {
-			auto it = eventEmotes.find(registryName + emoteName);
+		[] (std::string registryName, std::string emoteName, ccColor3B color) {
+			auto it = eventEmotes.find(registryName + "_" + emoteName);
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -108,8 +116,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteXOffsetListener = ConfigureEmote_SetXOffset().listen(
-		[&eventEmotes] (std::string registryName, std::string emoteName, float xOffset) {
-			auto it = eventEmotes.find(registryName + emoteName);
+		[] (std::string registryName, std::string emoteName, float xOffset) {
+			auto it = eventEmotes.find(registryName + "_" + emoteName);
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -123,8 +131,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteYOffsetListener = ConfigureEmote_SetYOffset().listen(
-		[&eventEmotes] (std::string registryName, std::string emoteName, float yOffset) {
-			auto it = eventEmotes.find(registryName + emoteName);
+		[] (std::string registryName, std::string emoteName, float yOffset) {
+			auto it = eventEmotes.find(registryName + "_" + emoteName);
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -138,8 +146,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteFlipXListener = ConfigureEmote_SetFlipX().listen(
-		[&eventEmotes] (std::string registryName, std::string emoteName, bool flipX) {
-			auto it = eventEmotes.find(registryName + emoteName);
+		[] (std::string registryName, std::string emoteName, bool flipX) {
+			auto it = eventEmotes.find(registryName + "_" + emoteName);
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
