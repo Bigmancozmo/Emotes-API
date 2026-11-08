@@ -107,6 +107,51 @@ $on_mod(Loaded) {
 		}
 	);
 
+	auto configureEmoteXOffsetListener = ConfigureEmote_SetXOffset().listen(
+		[&eventEmotes] (std::string registryName, std::string emoteName, float xOffset) {
+			auto it = eventEmotes.find(registryName + emoteName);
+
+			if (it != eventEmotes.end()) {
+				auto emote = it->second;
+				emote->setXOffset(xOffset);
+			} else {
+				log::error("[Event System] Tried to configure X offset of nonexistent emote '{}' in registry '{}'", emoteName, registryName);
+			}
+
+			return ListenerResult::Propagate;
+		}
+	);
+
+	auto configureEmoteYOffsetListener = ConfigureEmote_SetYOffset().listen(
+		[&eventEmotes] (std::string registryName, std::string emoteName, float yOffset) {
+			auto it = eventEmotes.find(registryName + emoteName);
+
+			if (it != eventEmotes.end()) {
+				auto emote = it->second;
+				emote->setYOffset(yOffset);
+			} else {
+				log::error("[Event System] Tried to configure Y offset of nonexistent emote '{}' in registry '{}'", emoteName, registryName);
+			}
+
+			return ListenerResult::Propagate;
+		}
+	);
+
+	auto configureEmoteFlipXListener = ConfigureEmote_SetFlipX().listen(
+		[&eventEmotes] (std::string registryName, std::string emoteName, bool flipX) {
+			auto it = eventEmotes.find(registryName + emoteName);
+
+			if (it != eventEmotes.end()) {
+				auto emote = it->second;
+				emote->setFlipX(flipX);
+			} else {
+				log::error("[Event System] Tried to configure flip X of nonexistent emote '{}' in registry '{}'", emoteName, registryName);
+			}
+
+			return ListenerResult::Propagate;
+		}
+	);
+
 	// leak all of them
 	createRegistryListener.leak();
 	finalizeRegistryListener.leak();
@@ -115,15 +160,7 @@ $on_mod(Loaded) {
 
 	configureEmoteScaleListener.leak();
 	configureEmoteColorListener.leak();
-
-	// Test code
-	CreateRegistry().send("event");
-	AddEmote().send("event", "e1", "e.png"_spr);
-	AddEmote().send("event", "v", "v.png"_spr);
-	AddEmote().send("event", "e2", "e.png"_spr);
-	AddEmote().send("event", "n", "n.png"_spr);
-	AddEmote().send("event", "t", "t.png"_spr);
-	ConfigureEmote_SetScale().send("event", "e1", 2.0f);
-	ConfigureEmote_SetColor().send("event", "e1", ccBLUE);
-	FinalizeRegistry().send("event");
+	configureEmoteXOffsetListener.leak();
+	configureEmoteYOffsetListener.leak();
+	configureEmoteFlipXListener.leak();
 }

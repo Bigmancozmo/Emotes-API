@@ -44,3 +44,18 @@ class ConfigureEmote_SetColor : public Event<ConfigureEmote_SetColor, bool(std::
 public:
     using Event::Event;
 };
+
+class ConfigureEmote_SetXOffset : public Event<ConfigureEmote_SetXOffset, bool(std::string registryName, std::string emoteName, float xOffset)> {
+public:
+    using Event::Event;
+};
+
+class ConfigureEmote_SetYOffset : public Event<ConfigureEmote_SetYOffset, bool(std::string registryName, std::string emoteName, float yOffset)> {
+public:
+    using Event::Event;
+};
+
+class ConfigureEmote_SetFlipX : public Event<ConfigureEmote_SetFlipX, bool(std::string registryName, std::string emoteName, bool flipX)> {
+public:
+    using Event::Event;
+};
