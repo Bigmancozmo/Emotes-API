@@ -51,10 +51,7 @@ EmoteDef* CustomEmote::getDef() {
 	def->m_x = m_xOffset;
 	def->m_y = m_yOffset;
 
-	// The paddings aren't defined on MacOS, so everything after the first pad is private.
-	// So we don't support flipX on MacOS.
-	// If that changes in the future, open a PR!
-#ifndef GEODE_IS_MACOS
+#if !defined(GEODE_IS_IOS) && !defined(GEODE_IS_MACOS)
 	def->m_flipX = m_flipX;
 #endif
 

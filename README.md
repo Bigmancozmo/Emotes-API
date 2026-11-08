@@ -40,4 +40,9 @@ registry->addEmote(CustomEmote::create("smiley", "smiley.png"_spr));
 registry->finalize();
 ```
 ## Notes
-- `CustomEmote::setFlipX` is not supported on MacOS. It'll compile, but it will not visually work. If you absolutely need a flipped emote that works on MacOS, then make a second sprite for it.
+- MacOS and iOS are not supported.
+	- No bindings for `EmoteSprite::defForName`
+	- No bindings for `EmotePickerPopup::layoutEmoteGrid`
+	- No platform-specific pads for `EmoteDef`'s members (this only makes flipX unusable, but still)
+	- Maybe more, but I already disabled them from compiling so I wouldn't know
+	- If these change - open a PR or an issue!

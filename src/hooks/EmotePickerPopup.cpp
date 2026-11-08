@@ -51,11 +51,11 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 		this->m_scrollContentLayer->setContentHeight(5.0f - newLowest->getPositionY() + (cellSize / 2.0f));
 	}
 
-	/*void layoutEmoteGrid() {
+	void layoutEmoteGrid() {
 		EmotePickerPopup::layoutEmoteGrid();
 		if (this->m_scrollContentMenu == nullptr) return;
 		layoutAdditionalEmotes();
-	}*/
+	}
 
 	void onWindowResized() {
 		EmotePickerPopup::onWindowResized();
