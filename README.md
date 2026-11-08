@@ -39,3 +39,5 @@ auto registry = CustomEmoteRegistry::create("mymod");
 registry->addEmote(CustomEmote::create("smiley", "smiley.png"_spr));
 registry->finalize();
 ```
+## Notes
+- `CustomEmote::setFlipX` is not supported on MacOS. It'll compile, but it will not visually work. If you absolutely need a flipped emote that works on MacOS, then make a second sprite for it.

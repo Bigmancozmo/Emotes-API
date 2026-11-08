@@ -47,10 +47,16 @@ EmoteDef* CustomEmote::getDef() {
 	def->m_scale = m_scale;
 	def->m_particleIndex = -5000 - m_index;
 	def->m_color = m_color;
-	def->m_flipX = m_flipX;
 	def->m_name = m_namespacedName.c_str();
 	def->m_x = m_xOffset;
 	def->m_y = m_yOffset;
+
+	// The paddings aren't defined on MacOS, so everything after the first pad is private.
+	// So we don't support flipX on MacOS.
+	// If that changes in the future, open a PR!
+#ifndef GEODE_IS_MACOS
+	def->m_flipX = m_flipX;
+#endif
 
 	this->m_def = def;
 	return def;
