@@ -36,11 +36,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build the mod
+      - name: Build Geode Mod
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
           target: ${{ matrix.config.target }}
+
+      - name: debug
+        if: matrix.config.name == 'macOS' || matrix.config.name == 'iOS'
+        run: cat build/bindings/bindings/Geode/binding_arm/EmoteDef.hpp
 
   package:
     name: Package builds
