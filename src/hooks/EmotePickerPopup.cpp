@@ -78,18 +78,26 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 					cellSize / spr->getContentSize().width,
 					cellSize / spr->getContentSize().height
 				));
+
+				// configure it according to the data
+				spr->setScale(spr->getScale() * emote->m_scale);
+				spr->setColor(emote->m_color);
+				spr->setFlipX(emote->m_flipX);
+
 				auto btn = CCMenuItemExt::createSpriteExtra(spr, [this, emote] (CCMenuItemSpriteExtra*) {
 					// weird crash workaround
 					auto textToInsert = ":" + emote->getNamespacedName() + ":";
 					for (char c : textToInsert) {
-						// NOTE: In the bindings you need to change insertAtCursor's return to void to make this work
-						// It'll compile if you don't, but it'll crash as soon as you click an emoji.
-						// Hopefully this changes in v6.0.0's full release
 						this->m_input->insertAtCursor(std::string(1, c));
 					}
 					});
 				auto lowest = Utils::getLowestChildNode(m_scrollContentMenu);
 				btn->setTag(0xEA121); // some random slop number that probably wont overlap with another mod
+
+				// set the offsets now that the button has been made
+				spr->setPositionX(emote->m_xOffset);
+				spr->setPositionY(emote->m_yOffset);
+
 				emoteButtonGroups[btn] = groupIdx;
 				this->m_scrollContentMenu->addChild(btn);
 			}

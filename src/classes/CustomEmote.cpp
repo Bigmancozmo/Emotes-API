@@ -50,10 +50,7 @@ EmoteDef* CustomEmote::getDef() {
 	def->m_name = m_namespacedName.c_str();
 	def->m_x = m_xOffset;
 	def->m_y = m_yOffset;
-
-#if !defined(GEODE_IS_IOS) && !defined(GEODE_IS_MACOS)
 	def->m_flipX = m_flipX;
-#endif
 
 	this->m_def = def;
 	return def;
