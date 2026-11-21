@@ -14,3 +14,4 @@ Emote images **must** be in a spritesheet for technical reasons.<br/>
 	- No platform-specific pads for `EmoteDef`'s members (this only makes flipX unusable, but still)
 	- Maybe more, but I already disabled them from compiling so I wouldn't know
 	- If these change - open a PR or an issue!
+	- (11/21/2026: i'm 99% sure this list is outdated but im too lazy to edit it just know mac and ios are incompatible)

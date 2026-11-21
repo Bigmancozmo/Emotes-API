@@ -22,7 +22,7 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 
 		for (int i = 0; i < children->count(); i++) {
 			auto btn = static_cast<CCNode*>(children->objectAtIndex(i));
-			if (!btn || btn->getTag() != 0xEA121) continue;
+			if (!btn || !btn->getID().starts_with("emotes_api_")) continue;
 
 			auto it = emoteButtonGroups.find(btn);
 			if (it == emoteButtonGroups.end()) continue;
@@ -93,7 +93,7 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 					}
 					});
 				auto lowest = Utils::getLowestChildNode(m_scrollContentMenu);
-				btn->setTag(0xEA121); // some random slop number that probably wont overlap with another mod
+				btn->setID("emotes_api_" + std::string(emote->getNamespacedName()));
 
 				// set the x/y offset now that the button has been made
 				auto size = btn->getContentSize();
