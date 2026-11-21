@@ -73,7 +73,8 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 		for (auto const& [name, emotes] : Shared::displayGroups) {
 			groupIdx++;
 			for (auto emote : emotes) {
-				auto spr = CCSprite::createWithSpriteFrameName(emote->m_texture.c_str());
+				auto texchar = emote->m_texture.c_str();
+				auto spr = CCSprite::createWithSpriteFrameName(texchar);
 				spr->setScale(std::min(
 					cellSize / spr->getContentSize().width,
 					cellSize / spr->getContentSize().height
@@ -86,7 +87,7 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 
 				auto btn = CCMenuItemExt::createSpriteExtra(spr, [this, emote] (CCMenuItemSpriteExtra*) {
 					// weird crash workaround
-					auto textToInsert = ":" + emote->getNamespacedName() + ":";
+					auto textToInsert = ":" + std::string(emote->getNamespacedName()) + ":";
 					for (char c : textToInsert) {
 						this->m_input->insertAtCursor(std::string(1, c));
 					}

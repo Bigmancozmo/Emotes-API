@@ -19,7 +19,7 @@ $on_mod(Loaded) {
 	//////////////////////////////////////////////////
 
 	auto createRegistryListener = CreateRegistry().listen(
-		[] (std::string name) {
+		[] (const char* name) {
 			auto it1 = eventRegistries.find(name);
 
 			if (it1 != eventRegistries.end()) {
@@ -35,7 +35,7 @@ $on_mod(Loaded) {
 	);
 
 	auto finalizeRegistryListener = FinalizeRegistry().listen(
-		[] (std::string name) {
+		[] (const char* name) {
 			auto it = eventRegistries.find(name);
 
 			if (it != eventRegistries.end()) {
@@ -55,14 +55,14 @@ $on_mod(Loaded) {
 	//////////////////////////////////////////////////
 
 	auto addEmoteListener = AddEmote().listen(
-		[] (std::string registryName, std::string name, std::string texture) {
+		[] (const char* registryName, const char* name, const char* texture) {
 			auto it1 = eventRegistries.find(registryName);
 
 			if (it1 != eventRegistries.end()) {
 				// Registry exists
 				auto registry = it1->second;
 
-				auto it2 = eventEmotes.find(registryName + "_" + name);
+				auto it2 = eventEmotes.find(std::string(registryName) + "_" + std::string(name));
 				if (it2 != eventEmotes.end()) {
 					// Emote exists in registry
 					log::error("[Event System] Emote '{}' already exists in registry '{}'", name, registryName);
@@ -70,7 +70,7 @@ $on_mod(Loaded) {
 					// Emote doesn't exist - add
 					auto emote = CustomEmote::create(name, texture);
 					registry->addEmote(emote);
-					eventEmotes[registryName + "_" + name] = emote;
+					eventEmotes[std::string(registryName) + "_" + std::string(name)] = emote;
 				}
 			} else {
 				// Registry doesn't exist - error
@@ -87,8 +87,8 @@ $on_mod(Loaded) {
 	//////////////////////////////////////////////////
 
 	auto configureEmoteScaleListener = ConfigureEmote_SetScale().listen(
-		[] (std::string registryName, std::string emoteName, float scale) {
-			auto it = eventEmotes.find(registryName + "_" + emoteName);
+		[] (const char* registryName, const char* emoteName, float scale) {
+			auto it = eventEmotes.find(std::string(registryName) + "_" + std::string(emoteName));
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -102,8 +102,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteColorListener = ConfigureEmote_SetColor().listen(
-		[] (std::string registryName, std::string emoteName, ccColor3B color) {
-			auto it = eventEmotes.find(registryName + "_" + emoteName);
+		[] (const char* registryName, const char* emoteName, ccColor3B color) {
+			auto it = eventEmotes.find(std::string(registryName) + "_" + std::string(emoteName));
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -117,8 +117,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteXOffsetListener = ConfigureEmote_SetXOffset().listen(
-		[] (std::string registryName, std::string emoteName, float xOffset) {
-			auto it = eventEmotes.find(registryName + "_" + emoteName);
+		[] (const char* registryName, const char* emoteName, float xOffset) {
+			auto it = eventEmotes.find(std::string(registryName) + "_" + std::string(emoteName));
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -132,8 +132,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteYOffsetListener = ConfigureEmote_SetYOffset().listen(
-		[] (std::string registryName, std::string emoteName, float yOffset) {
-			auto it = eventEmotes.find(registryName + "_" + emoteName);
+		[] (const char* registryName, const char* emoteName, float yOffset) {
+			auto it = eventEmotes.find(std::string(registryName) + "_" + std::string(emoteName));
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;
@@ -147,8 +147,8 @@ $on_mod(Loaded) {
 	);
 
 	auto configureEmoteFlipXListener = ConfigureEmote_SetFlipX().listen(
-		[] (std::string registryName, std::string emoteName, bool flipX) {
-			auto it = eventEmotes.find(registryName + "_" + emoteName);
+		[] (const char* registryName, const char* emoteName, bool flipX) {
+			auto it = eventEmotes.find(std::string(registryName) + "_" + std::string(emoteName));
 
 			if (it != eventEmotes.end()) {
 				auto emote = it->second;

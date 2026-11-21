@@ -1,11 +1,12 @@
 #include <API.hpp>
 
-CustomEmote* CustomEmote::create(std::string name, std::string spriteName) {
+CustomEmote* CustomEmote::create(const char* name, const char* spriteName) {
 	auto me = new CustomEmote();
-	for (char& c : name)
+	std::string nameStr = std::string(name);
+	for (char& c : nameStr)
 		c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 	me->m_texture = spriteName;
-	me->m_name = name;
+	me->m_name = nameStr;
 	me->m_color = ccWHITE;
 	me->m_scale = 1.0f;
 	me->m_xOffset = 0.0f;
@@ -56,6 +57,6 @@ EmoteDef* CustomEmote::getDef() {
 	return def;
 }
 
-std::string CustomEmote::getNamespacedName() {
-	return m_namespacedName;
+const char* CustomEmote::getNamespacedName() {
+	return m_namespacedName.c_str();
 }

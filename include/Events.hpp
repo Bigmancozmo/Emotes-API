@@ -10,12 +10,12 @@ using namespace geode::prelude;
 //////////////////// REGISTRY ////////////////////
 //////////////////////////////////////////////////
 
-class CreateRegistry : public Event<CreateRegistry, bool(std::string registryName)> {
+class CreateRegistry : public Event<CreateRegistry, bool(const char* registryName)> {
 public:
     using Event::Event;
 };
 
-class FinalizeRegistry : public Event<FinalizeRegistry, bool(std::string registryName)> {
+class FinalizeRegistry : public Event<FinalizeRegistry, bool(const char* registryName)> {
 public:
     using Event::Event;
 };
@@ -25,7 +25,7 @@ public:
 ///////////////////// EMOTE //////////////////////
 //////////////////////////////////////////////////
 
-class AddEmote : public Event<AddEmote, bool(std::string registryName, std::string emoteName, std::string spriteName)> {
+class AddEmote : public Event<AddEmote, bool(const char* registryName, const char* emoteName, const char* spriteName)> {
 public:
     using Event::Event;
 };
@@ -35,27 +35,27 @@ public:
 ///////////////////// CONFIG /////////////////////
 //////////////////////////////////////////////////
 
-class ConfigureEmote_SetScale : public Event<ConfigureEmote_SetScale, bool(std::string registryName, std::string emoteName, float scale)> {
+class ConfigureEmote_SetScale : public Event<ConfigureEmote_SetScale, bool(const char* registryName, const char* emoteName, float scale)> {
 public:
     using Event::Event;
 };
 
-class ConfigureEmote_SetColor : public Event<ConfigureEmote_SetColor, bool(std::string registryName, std::string emoteName, ccColor3B color)> {
+class ConfigureEmote_SetColor : public Event<ConfigureEmote_SetColor, bool(const char* registryName, const char* emoteName, ccColor3B color)> {
 public:
     using Event::Event;
 };
 
-class ConfigureEmote_SetXOffset : public Event<ConfigureEmote_SetXOffset, bool(std::string registryName, std::string emoteName, float xOffset)> {
+class ConfigureEmote_SetXOffset : public Event<ConfigureEmote_SetXOffset, bool(const char* registryName, const char* emoteName, float xOffset)> {
 public:
     using Event::Event;
 };
 
-class ConfigureEmote_SetYOffset : public Event<ConfigureEmote_SetYOffset, bool(std::string registryName, std::string emoteName, float yOffset)> {
+class ConfigureEmote_SetYOffset : public Event<ConfigureEmote_SetYOffset, bool(const char* registryName, const char* emoteName, float yOffset)> {
 public:
     using Event::Event;
 };
 
-class ConfigureEmote_SetFlipX : public Event<ConfigureEmote_SetFlipX, bool(std::string registryName, std::string emoteName, bool flipX)> {
+class ConfigureEmote_SetFlipX : public Event<ConfigureEmote_SetFlipX, bool(const char* registryName, const char* emoteName, bool flipX)> {
 public:
     using Event::Event;
 };

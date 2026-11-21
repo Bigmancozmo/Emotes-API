@@ -2,8 +2,8 @@
 
 #include <Geode/Geode.hpp>
 #include <cctype>
-#include <string>
 #include <vector>
+#include <string>
 
 using namespace geode::prelude;
 
@@ -21,7 +21,7 @@ using namespace geode::prelude;
 
 class EMOTES_API_DLL CustomEmote {
 public:
-	static CustomEmote* create(std::string name, std::string spriteName);
+	static CustomEmote* create(const char* name, const char* spriteName);
 
 	// u can chain these
 	CustomEmote* setColor(ccColor3B color);
@@ -31,7 +31,7 @@ public:
 	CustomEmote* setFlipX(bool flipX);
 
 	EmoteDef* getDef();
-	std::string getNamespacedName();
+	const char* getNamespacedName();
 
 public:
 	std::string m_texture;
@@ -51,7 +51,7 @@ private:
 
 class EMOTES_API_DLL CustomEmoteRegistry {
 public:
-	static CustomEmoteRegistry* create(std::string name);
+	static CustomEmoteRegistry* create(const char* name);
 
 	void addEmote(CustomEmote* emote);
 	void finalize();

@@ -22,7 +22,8 @@ class $modify(CCSpriteFrameCache) {
 							if (customEmoteId >= 0 && customEmoteId < Shared::registeredEmoteIDs.size()) {
 								auto customEmote = Shared::registeredEmoteIDs[customEmoteId];
 								if (customEmote) {
-									return CCSpriteFrameCache::spriteFrameByName(customEmote->m_texture.c_str());
+									auto cchar = customEmote->m_texture.c_str();
+									return CCSpriteFrameCache::spriteFrameByName(cchar);
 								}
 							}
 						}

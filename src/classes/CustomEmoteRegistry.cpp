@@ -2,11 +2,12 @@
 #include "../Utils.hpp"
 #include <cctype>
 
-CustomEmoteRegistry* CustomEmoteRegistry::create(std::string name) {
+CustomEmoteRegistry* CustomEmoteRegistry::create(const char* name) {
 	auto me = new CustomEmoteRegistry();
-	for (char& c : name)
+	std::string nameStr = std::string(name);
+	for (char& c : nameStr)
 		c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-	me->m_name = name;
+	me->m_name = nameStr;
 	return me;
 }
 
@@ -35,15 +36,15 @@ void CustomEmoteRegistry::finalize() {
 }
 
 bool CustomEmoteRegistry::registerEmote(CustomEmote* emote) {
-	auto name = m_name + "_" + emote->m_name;
+	auto name = std::string(m_name) + "_" + std::string(emote->m_name);
 
 	if (name.size() > 16) {
 		if (!Shared::anyEmotesFailed)
 			Notification::create(std::string("Some emotes were not added. More info is in the console."), NotificationIcon::Error, 4.0f)->show();
 		Shared::anyEmotesFailed = true;
 
-		bool namespaceTooLong = m_name.size() > 5;
-		bool nameTooLong = emote->m_name.size() > 10;
+		bool namespaceTooLong = std::string(m_name).size() > 5;
+		bool nameTooLong = std::string(emote->m_name).size() > 10;
 
 		if (namespaceTooLong)
 			log::error("Couldn't add emote ':{}:' - Namespace name '{}' must be 5 or less characters long", name, m_name);
