@@ -6,7 +6,10 @@ using namespace geode::prelude;
 
 std::unordered_map<CCNode*, int> emoteButtonGroups;
 class $modify(EmotePickerPopupMod, EmotePickerPopup) {
+	
+	// this function could use some improvement but it works so idc
 	void layoutAdditionalEmotes() {
+		bool hasBetterEmotePicker = Loader::get()->isModLoaded("kx_.better-emote-picker");
 		float cellSize = 26.0f;
 
 		CCNode* lowestNode = Utils::getLowestChildNode(this->m_scrollContentMenu);
@@ -18,11 +21,15 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 		float lowestY = lowestNode->getPositionY();
 		auto children = this->m_scrollContentMenu->getChildren();
 
+		if (hasBetterEmotePicker) {
+			leftestX = 21.0f;
+		}
+
 		std::unordered_map<int, int> idInGroups;
 
 		for (int i = 0; i < children->count(); i++) {
 			auto btn = static_cast<CCNode*>(children->objectAtIndex(i));
-			if (!btn || !btn->getID().starts_with("emotes_api_")) continue;
+			if (!btn || !btn->getID().starts_with(Utils::getModPrefix())) continue;
 
 			auto it = emoteButtonGroups.find(btn);
 			if (it == emoteButtonGroups.end()) continue;
@@ -40,7 +47,13 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 				idInGroups[groupIndex] = 0;
 			}
 
-			float y = lowestY - (groupIndex * cellSize * 1.5);
+			float y;
+
+			if (hasBetterEmotePicker) {
+				y = lowestY - (groupIndex * 48.0f);
+			} else {
+				y = lowestY - (groupIndex * cellSize * 1.5);
+			}
 
 			btn->setPosition(x, y);
 		}
@@ -86,20 +99,22 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 				spr->setFlipX(emote->m_flipX);
 
 				auto btn = CCMenuItemExt::createSpriteExtra(spr, [this, emote] (CCMenuItemSpriteExtra*) {
-					// weird crash workaround
+					// weird crash workaround (i think it's because of msvc string optimizations or something)
 					auto textToInsert = ":" + std::string(emote->getNamespacedName()) + ":";
 					for (char c : textToInsert) {
 						this->m_input->insertAtCursor(std::string(1, c));
 					}
-					});
+				});
+
 				auto lowest = Utils::getLowestChildNode(m_scrollContentMenu);
-				btn->setID("emotes_api_" + std::string(emote->getNamespacedName()));
+				btn->setID(Utils::getModPrefix() + std::string(emote->getNamespacedName()));
 
 				// set the x/y offset now that the button has been made
 				auto size = btn->getContentSize();
 				spr->setPosition({
 					size.width / 2 + emote->m_xOffset,
-					size.height / 2 + emote->m_yOffset });
+					size.height / 2 + emote->m_yOffset
+				});
 
 				emoteButtonGroups[btn] = groupIdx;
 				this->m_scrollContentMenu->addChild(btn);

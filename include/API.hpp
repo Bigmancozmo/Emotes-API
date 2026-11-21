@@ -51,13 +51,14 @@ private:
 
 class EMOTES_API_DLL CustomEmoteRegistry {
 public:
-	static CustomEmoteRegistry* create(const char* name);
+	static CustomEmoteRegistry* create(const char* shortName, const char* displayName);
 
 	void addEmote(CustomEmote* emote);
 	void finalize();
 
 private:
 	std::string m_name;
+	std::string m_displayName;
 	std::vector<CustomEmote*> uncommitted;
 	bool finalized;
 

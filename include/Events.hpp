@@ -10,7 +10,7 @@ using namespace geode::prelude;
 //////////////////// REGISTRY ////////////////////
 //////////////////////////////////////////////////
 
-class CreateRegistry : public Event<CreateRegistry, bool(const char* registryName)> {
+class CreateRegistry : public Event<CreateRegistry, bool(const char* shortName, const char* displayName)> {
 public:
     using Event::Event;
 };

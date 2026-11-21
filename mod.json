@@ -6,7 +6,7 @@
 	},
 	"id": "bigmancozmo.emotes-api",
 	"name": "Emotes API",
-	"version": "v1.0.0-beta.1",
+	"version": "v1.0.0-beta.2",
 	"developer": "Bigmancozmo",
 	"description": "API for mods to add custom comment emotes",
 	"tags": [ "developer", "api" ],

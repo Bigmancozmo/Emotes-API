@@ -19,16 +19,16 @@ $on_mod(Loaded) {
 	//////////////////////////////////////////////////
 
 	auto createRegistryListener = CreateRegistry().listen(
-		[] (const char* name) {
-			auto it1 = eventRegistries.find(name);
+		[] (const char* shortName, const char* displayName) {
+			auto it1 = eventRegistries.find(shortName);
 
 			if (it1 != eventRegistries.end()) {
 				// Registry exists - error
-				log::error("[Event System] Registry '{}' already exists", name);
+				log::error("[Event System] Registry '{}' already exists", shortName);
 			} else {
 				// Registry doesn't exist - create
-				auto registry = CustomEmoteRegistry::create(name);
-				eventRegistries[name] = registry;
+				auto registry = CustomEmoteRegistry::create(shortName, displayName);
+				eventRegistries[shortName] = registry;
 			}
 			return ListenerResult::Propagate;
 		}

@@ -7,6 +7,10 @@ CustomEmote* Utils::findRegisteredEmote(std::string name) {
 	return nullptr;
 }
 
+const std::string Utils::getModPrefix() {
+	return Mod::get()->getID() + "/";
+}
+
 CCNode* Utils::getLowestChildNode(CCNode* parent, bool ignoreAdditionalBtns) {
 	auto children = parent->getChildren();
 	if (children == nullptr) return nullptr;
@@ -15,7 +19,7 @@ CCNode* Utils::getLowestChildNode(CCNode* parent, bool ignoreAdditionalBtns) {
 	CCNode* lowestYNode = nullptr;
 	for (int i = 0; i < children->count(); i++) {
 		auto child = static_cast<CCNode*>(children->objectAtIndex(i));
-		if (!child || (child->getID().starts_with("emotes_api_") && ignoreAdditionalBtns)) continue;
+		if (!child || (child->getID().starts_with(Utils::getModPrefix()) && ignoreAdditionalBtns)) continue;
 		if (child->getPositionY() < lowestY) {
 			lowestYNode = child;
 			lowestY = child->getPositionY();
@@ -33,7 +37,7 @@ CCNode* Utils::getLeftestChildNode(CCNode* parent, bool ignoreAdditionalBtns) {
 	CCNode* leftestXNode = nullptr;
 	for (int i = 0; i < children->count(); i++) {
 		auto child = static_cast<CCNode*>(children->objectAtIndex(i));
-		if (!child || (child->getID().starts_with("emotes_api_") && ignoreAdditionalBtns)) continue;
+		if (!child || (child->getID().starts_with(Utils::getModPrefix()) && ignoreAdditionalBtns)) continue;
 		float xPos = child->getPositionX();
 		if (xPos < leftestX && xPos > 0.0f) { // the close button is at 0.0f so we kinda just do this ignore it
 			leftestXNode = child;

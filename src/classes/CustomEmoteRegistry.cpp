@@ -2,12 +2,13 @@
 #include "../Utils.hpp"
 #include <cctype>
 
-CustomEmoteRegistry* CustomEmoteRegistry::create(const char* name) {
+CustomEmoteRegistry* CustomEmoteRegistry::create(const char* shortName, const char* displayName) {
 	auto me = new CustomEmoteRegistry();
-	std::string nameStr = std::string(name);
+	std::string nameStr = std::string(shortName);
 	for (char& c : nameStr)
 		c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 	me->m_name = nameStr;
+	me->m_displayName = std::string(displayName);
 	return me;
 }
 

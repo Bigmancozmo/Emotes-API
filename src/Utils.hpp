@@ -20,4 +20,5 @@ public:
 	static CustomEmote* findRegisteredEmote(std::string name);
 	static CCNode* getLowestChildNode(CCNode* parent, bool ignoreAdditionalBtns = true);
 	static CCNode* getLeftestChildNode(CCNode* parent, bool ignoreAdditionalBtns = true);
+	static const std::string getModPrefix();
 };
