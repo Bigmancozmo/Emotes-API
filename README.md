@@ -1,9 +1,10 @@
 # Emotes API
 A Geode mod that adds an API for RobTop's comment emotes introduced in 2.209.<br/><br/>
 ## Example usage
-Because of how RobTop implemented his parser, emote names **cannot** be longer than 16 characters. The mod uses "registries" to group emotes, in an effort to prevent conflicts. The mod will not *crash* upon a conflict, but some emotes will be unavailable (emotes added first are prioritized and not replaced).<br/>
+Because of how RobTop implemented his parser, emote names **cannot** be longer than 16 characters. In an effort to prevent conflicts, the mod uses "registries" to group emotes. The mod will not *crash* upon a conflict, but some emotes will be unavailable (emotes added first are prioritized and not replaced).<br/>
 Internally, emotes get named `{namespace}_{name}`. To prevent reaching the 16 character limit, namespaces must be **5 characters or shorter**, and emote names must be **10 characters or shorter**.<br/>
 Emote images **must** be in a spritesheet for technical reasons.<br/>
+[Example repository](https://github.com/Bigmancozmo/Emotes-API-Example)<br/>
 [Usage as a required dependency](https://github.com/Bigmancozmo/Emotes-API/blob/master/examples/required.md)<br/>
 [Usage as an optional dependency](https://github.com/Bigmancozmo/Emotes-API/blob/master/examples/optional.md)
 ## Notes
