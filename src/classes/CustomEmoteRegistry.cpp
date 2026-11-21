@@ -19,7 +19,7 @@ void CustomEmoteRegistry::addEmote(CustomEmote* emote) {
 }
 
 void CustomEmoteRegistry::finalize() {
-	/*if (finalized) {
+	if (finalized) {
 		log::error("Tried to finalize registry '{}' after already finalizing", m_name);
 		return;
 	}
@@ -31,7 +31,7 @@ void CustomEmoteRegistry::finalize() {
 			registered++;
 	}
 	log::info("Registered emote namespace '{}' with {}/{} emotes!", m_name, registered, uncommitted.size());
-	uncommitted.clear();*/
+	uncommitted.clear();
 }
 
 bool CustomEmoteRegistry::registerEmote(CustomEmote* emote) {
