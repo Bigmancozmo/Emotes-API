@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include "../include/API.hpp"
 
 using namespace geode::prelude;
@@ -12,6 +13,7 @@ public:
 	inline static std::vector<std::pair<std::string, CustomEmote*>> registeredEmotes;
 	inline static std::vector<CustomEmote*> registeredEmoteIDs;
 	inline static std::vector<std::pair<std::string, std::vector<CustomEmote*>>> displayGroups;
+	inline static std::unordered_map<std::string, std::string> shortToDisplayNameMap;
 	inline static bool anyEmotesFailed = false;
 };
 

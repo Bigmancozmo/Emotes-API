@@ -29,8 +29,9 @@ void CustomEmoteRegistry::finalize() {
 	finalized = true;
 	size_t registered = 0;
 	for (auto emote : uncommitted) {
-		if (registerEmote(emote))
+		if (registerEmote(emote)) {
 			registered++;
+		}
 	}
 	log::info("Registered emote namespace '{}' with {}/{} emotes!", m_name, registered, uncommitted.size());
 	uncommitted.clear();
@@ -68,6 +69,13 @@ bool CustomEmoteRegistry::registerEmote(CustomEmote* emote) {
 
 		Shared::registeredEmotes.emplace_back(name, emote);
 		Shared::registeredEmoteIDs.push_back(emote);
+
+		// ew
+		if (!std::ranges::any_of(Shared::shortToDisplayNameMap, [&] (const auto& pair) {
+				return pair.second == m_displayName;
+			})) {
+			Shared::shortToDisplayNameMap.try_emplace(name, m_displayName);
+		}
 
 		auto group = std::find_if(Shared::displayGroups.begin(), Shared::displayGroups.end(), [&] (auto const& entry) {
 			return entry.first == m_name;

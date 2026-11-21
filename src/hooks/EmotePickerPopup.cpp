@@ -56,6 +56,14 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 			}
 
 			btn->setPosition(x, y);
+
+			// Find & position the label
+			if (hasBetterEmotePicker) {
+				auto label = this->m_scrollContentMenu->getChildByID(btn->getID() + "_label");
+				log::info("Searching for {}", btn->getID() + "_label");
+				if (!label) continue;
+				label->setPosition(10.0f, y + 18.0f);
+			}
 		}
 
 		// find the new lowest one and set the content height (including the custom buttons)
@@ -79,8 +87,25 @@ class $modify(EmotePickerPopupMod, EmotePickerPopup) {
 	void onBuildWindowContent() {
 		EmotePickerPopup::onBuildWindowContent();
 
+		bool hasBetterEmotePicker = Loader::get()->isModLoaded("kx_.better-emote-picker");
+
 		// Normally it's just 26.0f but we want the images to appear a little smaller
-		float cellSize = 26.0f * 0.75f;
+		float cellSize;
+		if (hasBetterEmotePicker) {
+			cellSize = 26.0f * 0.78f;
+		} else {
+			cellSize = 26.0f * 0.75f;
+		}
+
+		if (hasBetterEmotePicker) {
+			for (const auto& [firstEmoteName, categoryName] : Shared::shortToDisplayNameMap) {
+				auto label = CCLabelBMFont::create(categoryName.c_str(), "goldFont.fnt");
+				label->setID(Utils::getModPrefix() + firstEmoteName + "_label");
+				label->setScale(0.4f);
+				label->setAnchorPoint({ 0.0f, 0.5f });
+				this->m_scrollContentMenu->addChild(label);
+			}
+		}
 
 		int groupIdx = 0;
 		for (auto const& [name, emotes] : Shared::displayGroups) {
