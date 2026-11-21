@@ -1,6 +1,7 @@
 #include <API.hpp>
 
 CustomEmote* CustomEmote::create(std::string name, std::string spriteName) {
+	log::info("CREATED EMOTE: {} = {}", name, spriteName);
 	auto me = new CustomEmote();
 	for (char& c : name)
 		c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));

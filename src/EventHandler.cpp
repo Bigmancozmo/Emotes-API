@@ -9,6 +9,7 @@
 
 using namespace geode::prelude;
 
+// i'll clean this up, eventually
 $on_mod(Loaded) {
 	static std::unordered_map<std::string, CustomEmoteRegistry*> eventRegistries;
 	static std::unordered_map<std::string, CustomEmote*> eventEmotes;
