@@ -5,6 +5,7 @@
 using namespace geode::prelude;
 
 class $modify(EmoteSprite) {
+	// no mac
 	static EmoteDef* defForName(std::string const& name) {
 		auto custom = Utils::findRegisteredEmote(name);
 		if (custom) return custom->getDef();
