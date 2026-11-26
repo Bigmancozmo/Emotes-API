@@ -7,11 +7,3 @@ Emote images **must** be in a spritesheet for technical reasons.<br/>
 [Example repository](https://github.com/Bigmancozmo/Emotes-API-Example)<br/>
 [Usage as a required dependency](https://github.com/Bigmancozmo/Emotes-API/blob/master/examples/required.md)<br/>
 [Usage as an optional dependency](https://github.com/Bigmancozmo/Emotes-API/blob/master/examples/optional.md)
-## Notes
-- MacOS and iOS are not supported.
-	- No bindings for `EmoteSprite::defForName`
-	- No bindings for `EmotePickerPopup::layoutEmoteGrid`
-	- No platform-specific pads for `EmoteDef`'s members (this only makes flipX unusable, but still)
-	- Maybe more, but I already disabled them from compiling so I wouldn't know
-	- If these change - open a PR or an issue!
-	- (11/21/2026: i'm 99% sure this list is outdated but im too lazy to edit it just know mac and ios are incompatible)
