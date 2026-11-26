@@ -1,12 +1,12 @@
 {
-	"geode": "6.0.0-beta.1",
+	"geode": "6.0.0",
 	"gd": {
 		"win": "2.2091",
 		"android": "2.2091"
 	},
 	"id": "bigmancozmo.emotes-api",
 	"name": "Emotes API",
-	"version": "v1.0.0-beta.2",
+	"version": "v1.0.0",
 	"developer": "Bigmancozmo",
 	"description": "API for mods to add custom comment emotes",
 	"tags": [ "developer", "api" ],
